@@ -1,0 +1,221 @@
+Question- Find the Number of Winning Players
+
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+int countWinners(int n, vector<vector<int>>& pick) {
+    vector<unordered_map<int, int>> colorCount(n);  
+
+   
+    for (const auto& p : pick) {
+        int player = p[0];
+        int color = p[1];
+        colorCount[player][color]++;
+    }
+
+    int winners = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (const auto& entry : colorCount[i]) {
+            if (entry.second > i) {  
+                winners++;
+                break;
+            }
+        }
+    }
+
+    return winners;
+}
+
+int main() {
+  
+    int n1 = 4;
+    vector<vector<int>> pick1 = {{0, 0}, {1, 0}, {1, 0}, {2, 1}, {2, 1}, {2, 0}};
+    cout << "Number of winners: " << countWinners(n1, pick1) << endl; 
+
+   
+    int n2 = 5;
+    vector<vector<int>> pick2 = {{1, 1}, {1, 2}, {1, 3}, {1, 4}};
+    cout << "Number of winners: " << countWinners(n2, pick2) << endl; 
+
+   
+    int n3 = 5;
+    vector<vector<int>> pick3 = {{1, 1}, {2, 4}, {2, 4}, {2, 4}};
+    cout << "Number of winners: " << countWinners(n3, pick3) << endl; 
+
+    return 0;
+}
+
+1)Implement a Student class with attributes for name and grades. Provide
+methods to add grades, calculate the average, and display student
+information.
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Student {
+private:
+    string name;
+    vector<int> grades;
+
+public:
+    Student(string studentName) : name(studentName) {}
+
+    void addGrade(int grade) {
+        grades.push_back(grade);
+    }
+
+    double calculateAverage() const {
+        if (grades.empty()) {
+            return 0.0; 
+        }
+        int sum = 0;
+        for (int grade : grades) {
+            sum += grade;
+        }
+        return static_cast<double>(sum) / grades.size();
+    }
+
+    void displayInfo() const {
+        cout << "Student Name: " << name << endl;
+        cout << "Grades: ";
+        for (int grade : grades) {
+            cout << grade << " ";
+        }
+        cout << endl;
+        cout << "Average Grade: " << calculateAverage() << endl;
+    }
+};
+
+int main() {
+    cout << "Enter student name: ";
+    string studentName;
+    getline(cin, studentName);
+
+    Student student(studentName);
+
+    int numberOfGrades;
+    cout << "Enter the number of grades to input: ";
+    cin >> numberOfGrades;
+
+    for (int i = 0; i < numberOfGrades; ++i) {
+        int grade;
+        cout << "Enter grade " << i + 1 << ": ";
+        cin >> grade;
+        student.addGrade(grade);
+    }
+
+    student.displayInfo();
+
+    return 0;
+}
+
+
+
+2)Concatenate two strings
+
+
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    char str1[100], str2[100];
+
+    cout << "Enter the first string: ";
+    cin.getline(str1, 100);  
+
+    cout << "Enter the second string: ";
+    cin.getline(str2, 100); 
+
+    int len1 = 0, len2 = 0;
+    
+    while (str1[len1] != '\0') {
+        len1++;
+    }
+    
+    while (str2[len2] != '\0') {
+        len2++;
+    }
+
+    char result[len1 + len2 + 1]; 
+
+    for (int i = 0; i < len1; i++) {
+        result[i] = str1[i];
+    }
+
+    for (int i = 0; i < len2; i++) {
+        result[len1 + i] = str2[i];
+    }
+
+    result[len1 + len2] = '\0';
+
+    cout << "Concatenated String: " << result << endl;
+
+    return 0;
+}
+3)Create a program to track monthly expenses and categorize them
+(e.g., food, transport, entertainment)
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class ExpenseTracker {
+private:
+    unordered_map<string, vector<double>> categories;
+
+public:
+    void addExpense(const string& category, double amount) {
+        categories[category].push_back(amount);
+    }
+
+    void displayExpenses() const {
+        double totalExpenses = 0.0;
+        cout << "Expense Summary:" << endl;
+        for (const auto& pair : categories) {
+            const string& category = pair.first;
+            const vector<double>& expenses = pair.second;
+            double total = 0.0;
+            for (double expense : expenses) {
+                total += expense;
+            }
+            totalExpenses += total;
+            cout << "Category: " << category << ", Total: Rs" << total << endl;
+        }
+        cout << "Total Expenses: Rs " << totalExpenses << endl;
+    }
+};
+
+int main() {
+    ExpenseTracker tracker;
+
+    int numberOfEntries;
+    cout << "Enter the number of expense entries: ";
+    cin >> numberOfEntries;
+    
+    for (int i = 0; i < numberOfEntries; ++i) {
+        string category;
+        double amount;
+
+        cout << "Enter expense category (e.g., food, transport, entertainment): ";
+        cin >> category;
+        cout << "Enter expense amount: ";
+        cin >> amount;
+
+        tracker.addExpense(category, amount);
+    }
+    tracker.displayExpenses();
+
+    return 0;
+}
+
