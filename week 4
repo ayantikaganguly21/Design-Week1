@@ -1,0 +1,258 @@
+You are given an array of prices where prices[i] is the price of a given stock
+on an ith day.
+You want to maximize your profit by choosing a single day to buy one stock
+and choosing a different day in the future to sell that stock. Return the
+maximum profit you can achieve from this transaction. If you cannot
+achieve any profit, return 0.
+
+#include <iostream>
+#include <vector>
+#include <algorithm> // for min and max functions
+using namespace std;
+
+int maxProfit(const vector<int>& prices) {
+    if (prices.empty()) return 0; 
+    int minPrice = prices[0]; 
+    int maxProfit = 0;       
+
+    for (int i = 1; i < prices.size(); ++i) {
+        minPrice = min(minPrice, prices[i]);
+
+        maxProfit = max(maxProfit, prices[i] - minPrice);
+    }
+
+    return maxProfit;
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of days: ";
+    cin >> n;
+
+    vector<int> prices(n);
+    cout << "Enter the stock prices: ";
+    for (int i = 0; i < n; ++i) {
+        cin >> prices[i];
+    }
+
+    int result = maxProfit(prices);
+    cout << "Maximum profit: " << result << endl;
+
+    return 0;
+}
+
+
+Build a to-do list application where tasks can be prioritized and sorted
+based on their importance.
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Task {
+    string description;
+    int priority;
+
+    Task(string desc, int prio) {
+        description = desc;
+        priority = prio;
+    }
+};
+
+bool compareTasks(const Task& a, const Task& b) {
+    return a.priority > b.priority; 
+}
+
+class ToDoList {
+private:
+    vector<Task> tasks;
+
+public:
+    void addTask() {
+        string desc;
+        int prio;
+        cout << "Enter task description: ";
+        cin.ignore();  
+        getline(cin, desc);
+        cout << "Enter task priority (1 = low, 5 = high): ";
+        cin >> prio;
+
+        tasks.push_back(Task(desc, prio));
+        cout << "Task added successfully!" << endl;
+    }
+
+    void displayTasks() {
+        if (tasks.empty()) {
+            cout << "No tasks available!" << endl;
+            return;
+        }
+
+        sort(tasks.begin(), tasks.end(), compareTasks);
+
+        cout << "\nTo-Do List (Sorted by Priority):\n";
+        for (size_t i = 0; i < tasks.size(); ++i) {
+            cout << i + 1 << ". " << tasks[i].description << " (Priority: " << tasks[i].priority << ")" << endl;
+        }
+    }
+
+    void markTaskDone() {
+        if (tasks.empty()) {
+            cout << "No tasks available to mark as done!" << endl;
+            return;
+        }
+
+        displayTasks();
+        int taskNumber;
+        cout << "Enter the number of the task to mark as done: ";
+        cin >> taskNumber;
+
+        if (taskNumber <= 0 || taskNumber > tasks.size()) {
+            cout << "Invalid task number!" << endl;
+            return;
+        }
+
+        tasks.erase(tasks.begin() + taskNumber - 1);
+        cout << "Task marked as done and removed from the list!" << endl;
+    }
+};
+
+int main() {
+    ToDoList todoList;
+    int choice;
+
+    while (true) {
+        cout << "\nTo-Do List Menu:\n";
+        cout << "1. Add Task\n";
+        cout << "2. Display Tasks\n";
+        cout << "3. Mark Task as Done\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                todoList.addTask();
+                break;
+            case 2:
+                todoList.displayTasks();
+                break;
+            case 3:
+                todoList.markTaskDone();
+                break;
+            case 4:
+                cout << "Exiting program..." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
+
+Reverse the order of elements in a list.
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void reverseList(vector<int>& arr) {
+    int start = 0;
+    int end = arr.size() - 1;
+
+    while (start < end) {
+        swap(arr[start], arr[end]);
+
+        start++;
+        end--;
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of elements in the list: ";
+    cin >> n;
+
+    vector<int> arr(n);
+    cout << "Enter the elements: ";
+    for (int i = 0; i < n; ++i) {
+        cin >> arr[i];
+    }
+
+    reverseList(arr);
+
+    cout << "Reversed list: ";
+    for (int i = 0; i < n; ++i) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+Build a recommendation system that suggests products or content
+based on user preferences and behavior
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+struct Product {
+    string name;
+    string category;
+
+    Product(string n, string c) : name(n), category(c) {}
+};
+
+void recommendProducts(const vector<Product>& products, const vector<string>& preferences) {
+    vector<Product> recommendations;
+
+    for (const string& pref : preferences) {
+        for (const Product& product : products) {
+            if (product.category == pref) {
+                recommendations.push_back(product);
+            }
+        }
+    }
+
+    if (!recommendations.empty()) {
+        cout << "Recommended products for you:\n";
+        for (const Product& product : recommendations) {
+            cout << "- " << product.name << " (" << product.category << ")\n";
+        }
+    } else {
+        cout << "No products match your preferences.\n";
+    }
+}
+
+int main() {
+    vector<Product> products = {
+        {"iPhone", "Electronics"},
+        {"Samsung TV", "Electronics"},
+        {"Harry Potter", "Books"},
+        {"The Lord of the Rings", "Books"},
+        {"Nike Shoes", "Fashion"},
+        {"Adidas T-shirt", "Fashion"},
+        {"Apple Watch", "Electronics"},
+        {"The Alchemist", "Books"}
+    };
+
+    int n;
+    cout << "Enter the number of product categories you are interested in: ";
+    cin >> n;
+    vector<string> preferences(n);
+
+    cout << "Enter your preferred categories (e.g., Electronics, Books, Fashion):\n";
+    cin.ignore();  
+    for (int i = 0; i < n; ++i) {
+        getline(cin, preferences[i]);
+    }
+
+    recommendProducts(products, preferences);
+
+    return 0;
+}
+
+
